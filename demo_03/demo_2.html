@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布流</title>
+    <style>
+    .grid {
+      font-size: 0;
+    }
+    .grid-item {
+        width: 200px;
+    }
+    </style>
+</head>
+
+<body>
+    <div>
+        <ul class="grid">
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=1"></li>
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=10"></li>
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=100"></li>
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=1000"></li>
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=10000"></li>
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=11"></li>
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=111"></li>
+            <li class="grid-item"><img src="https://placem.at/places?w=200&random=1111"></li>
+        </ul>
+    </div>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script>
+      var clockArr = [];
+      $('img').each(function(index, item) {
+        clockArr[index] = setInterval(function() {
+          if (item.naturalWidth) {
+            clearInterval(clockArr[index]);
+            // console.log(item.fileSize);
+
+            // $(item).parent('li').css({'width':item.naturalWidth, 'height':item.naturalHeight, 'background': '#ccc'});
+          }
+        });
+      });
+      $('img').on('load', function () {
+        console.log('fully loaded');
+      });
+      // $('.grid').masonry({
+      //   // options
+      //   itemSelector: '.grid-item',
+      //   columnWidth: 200
+      // });
+    </script>
+</body>
+
+</html>

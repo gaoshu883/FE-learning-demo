@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>image_loading</title>
+</head>
+<body>
+  <script type="text/javascript">
+  var start1, start2, end;
+    var img = document.createElement('img');
+    img.src = '02.jpg';
+    var poll = setInterval(function() {
+      if(img.naturalWidth) {
+        clearInterval(poll);
+        console.log(img.naturalWidth, img.naturalHeight, start1 = new Date);
+      }
+    });
+    console.log(start2 = new Date);
+    img.onload = function () {
+      console.log('Fully loaded!', end = new Date, '图片从获知到加载完成的时间：', end - start1, '图片加载时间为' , end - start2);
+    }
+    console.log('完全可以在获取图片尺寸后，设置cover的宽和高，然后再实现瀑布流布局');
+  </script>
+</body>
+</html>
