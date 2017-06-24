@@ -10,9 +10,32 @@
     }
     .grid-item {
         width: 200px;
-        /*float: left;*/
+        float: left;
     }
     </style>
+    <script src="js/jquery-3.1.1.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script>
+      // 利用jquery实现
+      $(window).on('load',function() {
+        console.log('fully loaded');
+        $('.grid').masonry({
+          itemSelector: '.grid-item',
+          columnWidth: 200
+        });
+      });
+
+      // 原生js实现
+      // document.onreadystatechange = function () {
+      //   if (document.readyState === "complete") {
+      //     console.log('fully loaded');
+      //     $('.grid').masonry({
+      //       itemSelector: '.grid-item',
+      //       columnWidth: 200
+      //     });
+      //   }
+      // };
+    </script>
 </head>
 
 <body>
@@ -28,29 +51,18 @@
             <li class="grid-item"><img src="https://placem.at/places?w=200&random=1111"></li>
         </ul>
     </div>
-    <script src="js/jquery-3.1.1.js"></script>
-    <script src="js/masonry.pkgd.min.js"></script>
-    <script>
-      // var clockArr = [];
-      // $('img').each(function(index, item) {
-      //   clockArr[index] = setInterval(function() {
-      //     if (item.naturalWidth) {
-      //       clearInterval(clockArr[index]);
-      //       // console.log(item.fileSize);
-
-      //       // $(item).parent('li').css({'width':item.naturalWidth, 'height':item.naturalHeight, 'background': '#ccc'});
-      //     }
-      //   });
-      // });
-      // $('img').on('load', function () {
-      //   console.log('fully loaded');
-      // });
-      $('.grid').masonry({
-        // options
-        itemSelector: '.grid-item',
-        columnWidth: 200
+<!--     <script>
+      // 为每一张图片都注册了加载事件处理程序，所以
+      // 每当有一张图片加载完成，就会进行一次瀑布流布局
+      $('img').on('load', function () {
+        console.log('fully loaded');
+        $('.grid').masonry({
+          // options
+          itemSelector: '.grid-item',
+          columnWidth: 200
+        });
       });
-    </script>
+    </script> -->
 </body>
 
 </html>
