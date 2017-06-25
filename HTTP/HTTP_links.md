@@ -1,0 +1,19 @@
+# PPT
+[戳这里](http://note.youdao.com/noteshare?id=3cef3b406772c85ef8bf45d0a2784bcd)，其实也在下面的学习笔记文件夹中^^
+
+# 《图解PPT》学习笔记
+[戳这里](http://note.youdao.com/noteshare?id=119b6177950fca43881213183a0ecebc)
+
+# 超链接
++ [What is the Internet?](http://www.netinternetinfo.com/
+)(text)
++ [What is the Internet?](https://youtu.be/Dxcc6ycZ73M?list=PLuemBv_ZdLP-f4xSKX2BnlywyV1mQ-Cso
+)(video)
++ [What is TCP/IP?](https://youtu.be/PpsEaqJV_A0?list=PLuemBv_ZdLP-f4xSKX2BnlywyV1mQ-Cso
+)
++ [The Internet: Wires, Cables & Wifi](https://youtu.be/ZhEf7e4kopM?list=PLuemBv_ZdLP-f4xSKX2BnlywyV1mQ-Cso
+)
++ [The Internet: Packets, Routing & Reliability](https://youtu.be/AYdF7b3nMto?list=PLuemBv_ZdLP-f4xSKX2BnlywyV1mQ-Cso
+)
++ [前端工程师应该对 HTTP 了解到什么程度？从哪些途径去熟悉更好？](https://www.zhihu.com/question/20391668)
+
