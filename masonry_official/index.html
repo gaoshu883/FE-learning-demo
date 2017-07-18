@@ -79,7 +79,7 @@
     <progress max="7" value="0"></progress>
   </div>
   <div id="image-container"></div>
-  <script src="../../js/lib/jquery-3.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
   <script>
   var $container = $('#image-container');
@@ -162,6 +162,7 @@
 
   // triggered after each item is loaded
   function onProgress(imgLoad, image) {
+    console.log(image.isLoaded);
     // change class if the image is loaded or broken
     var $item = $(image.img).parent();
     $item.removeClass('is-loading');
