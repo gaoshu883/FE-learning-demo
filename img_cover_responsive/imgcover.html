@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .cover {
+      width: 200px;
+      padding-bottom: 200px;
+      height: 0;
+    }
+    .cover img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .cover2 {
+      width: 200px;
+      height: 200px;
+    }
+    .cover2 img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <!-- 当容器的高度设置为0，这个时候就不能把里面的img的高度设置为100% -->
+  <div class="cover">
+    <img src="https://placem.at/things?w=300&h=200&random=111" alt="">
+  </div>
+  <!-- 而在这个例子中，里面的img使用的是绝对定位 -->
+  <!-- 外层容器全部都是内边距形成的正方形，那么里面的img的width和高就是相对于这个正方形设定的，即使容器的高为0 -->
+  <div data-role="square" style="position:relative;width:25%;padding-bottom:25%;height:0;overflow: hidden;margin: 0 auto;">
+    <img style="display:block;position:absolute;top:0;left:0;bottom:0;right:0;width: 100%;height:100%;object-fit: cover" src="https://placem.at/things?w=100&h=200&random=1112" alt="">
+  </div>
+  <div class="cover2">
+    <img src="https://placem.at/things?w=300&h=200&random=11124" alt="">
+  </div>
+</body>
+</html>
