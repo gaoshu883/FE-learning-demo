@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>实现图片拖曳裁剪和上传功能</title>
+</head>
+<body>
+<script>
+  var handler = {
+    init: function($container) {
+      $container.on('dragover', function(e) {
+        e.preventDefault();
+      });
+      $container.on('drop', function(e) {
+        e.preventDefault();
+        var file = e.originalEvent.dataTransfer.files[0];
+        handler.handleDrop($(this), file);
+      });
+    }
+  }
+</script>
+</body>
+</html>
