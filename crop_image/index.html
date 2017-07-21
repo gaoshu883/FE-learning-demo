@@ -3,21 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <title>实现图片拖曳裁剪和上传功能</title>
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.js"></script>
+  <style>
+    .img_container {
+      width: 50vw;
+    }
+    img {
+      max-width: 100%; /* This rule is very important, please do not ignore this! */
+    }
+  </style>
 </head>
 <body>
+  <div class="img_container">
+    <img id="image" src="lime-2133091_640.jpg">
+  </div>
 <script>
-  var handler = {
-    init: function($container) {
-      $container.on('dragover', function(e) {
-        e.preventDefault();
-      });
-      $container.on('drop', function(e) {
-        e.preventDefault();
-        var file = e.originalEvent.dataTransfer.files[0];
-        handler.handleDrop($(this), file);
-      });
+  $('#image').cropper({
+    aspectRatio: 16 / 9,
+    crop: function(e) {
+      // Output the result data for cropping image.
+      console.log(e.x);
+      console.log(e.y);
+      console.log(e.width);
+      console.log(e.height);
+      console.log(e.rotate);
+      console.log(e.scaleX);
+      console.log(e.scaleY);
     }
-  }
+  });
 </script>
 </body>
 </html>
