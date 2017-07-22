@@ -58,7 +58,7 @@
       <span class="cropper-view"></span>
     </div>
   </div>
-  <div style="text-align: center;margin: 20px auto;"><button onclick="saveImg()">保存截图</button></div>
+  <div style="text-align: center;margin: 20px auto;"><button onclick="">保存截图</button></div>
   <script>
       // 创建裁剪工具
       var width = $('#image').parent().width();
@@ -129,12 +129,12 @@
           prevCor.y = e.pageY;
           cropper.x += e.pageX - downCor.x;
           cropper.y += e.pageY - downCor.y;
-          console.log(cropper);
+          cropImage();
         }
       });
 
-      // 将裁剪的图片输入
-      function saveImg () {
+      // 裁剪图片
+      function cropImage () {
         if(!$('#canvas').length) {
           $(document.body).append($('<canvas></canvas>', {
             id: 'canvas',
@@ -147,6 +147,7 @@
         // 为什么参数是下面这样设置才能正常显示
         ctx.drawImage(img,cropper.x,cropper.y,200,150,0,0,300,150);
       }
+
   </script>
 </body>
 </html>
