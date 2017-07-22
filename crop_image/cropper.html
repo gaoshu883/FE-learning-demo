@@ -9,14 +9,15 @@
       padding: 0;
       margin: 0;
     }
-    img {
-      /*max-width: 100%;*/
+    .img-container {
+      width: 500px;
     }
     .cropper-model {
       opacity: 0.5;
       background: #000;
     }
     .cropper-container {
+      margin: 20px auto;
       position: relative;
       cursor: crosshair;
     }
@@ -48,42 +49,32 @@
   <div class="img-container">
       <img id="image" src="lime-2133091_640.jpg" alt="Picture">
   </div>
-  <div class="cropper-container">
-    <!-- 原始图像-->
+<!--   <div class="cropper-container">
     <div class="cropper-canvas"></div>
-    <!-- 半透明蒙版 -->
     <div class="cropper-mask"></div>
-    <!-- 裁剪框 -->
     <div class="cropper-cropbox">
       <span class="cropper-view"></span>
     </div>
-  </div>
+  </div> -->
   <div style="text-align: center;margin: 20px auto;"><button onclick="">保存截图</button></div>
   <script>
-      // 创建裁剪工具
-      var width = $('#image').parent().width();
-      var height = $('#image').parent().height();
-      $('#image').hide();
-      $('.cropper-container').width(width).height(height);
-      $('.cropper-mask').addClass('cropper-model');
-      $('.cropper-canvas').append("<img>").children().attr({
-        'src': $('#image').attr('src')
-      });
-      $('.cropper-view').append("<img>").children().attr('src', $('#image').attr('src')).css({
-        'transform': 'translateX(-50px) translateY(-20px)'
-      });
+      var DOM = {
+        $img: $('#image')
+      };
+      var ratio;
+      var template = `<div class="cropper-container"><div class="cropper-canvas"></div><div class="cropper-mask cropper-model"></div><div class="cropper-cropbox"><span class="cropper-view"></span></div></div>`;
       // 鼠标之前的坐标
       var prevCor = {
         x: 0,
         y: 0
       };
-      // 鼠标每次位移
-      var delCor = {
+      // 鼠标按下位置
+      var downCor = {
         x: 0,
         y: 0
       };
-      // 鼠标按下位置
-      var downCor = {
+      // 鼠标每次移动的坐标
+      var delCor = {
         x: 0,
         y: 0
       };
@@ -95,57 +86,79 @@
         y:20
       };
       var moveFlag = false;
-      // 移动裁剪工具(定义各类响应事件)
-      $('.cropper-view').on({
-        mousedown: function(e) {
-          moveFlag = true;
-          downCor.x = prevCor.x = e.pageX;
-          downCor.y = prevCor.y = e.pageY;
-          // 防止图片被拖拽
-          e.preventDefault();
-        },
-        mousemove: function(e) {
-          if(moveFlag) {
-            // 每次的位移
-            delCor.x = e.pageX - prevCor.x;
-            delCor.y = e.pageY - prevCor.y;
-            // 累计位移
-            delCor.sum_x += delCor.x;
-            delCor.sum_y += delCor.y;
+      // 图片加载完毕后再初始化
+      document.getElementById('image').onload = function() {
+        var width = DOM.$img.parent().width();
+        // 图片的缩放比
+        ratio = width / DOM.$img.width();
+        var height = DOM.$img.height() * ratio;
+
+        // 隐藏图片
+        DOM.$img.parent().hide();
+        // 创建裁剪工具
+        DOM.$img.parent().before(template);
+        $.extend(DOM, {
+          $cropperContainer: $('.cropper-container'),
+          $cropperCanvas: $('.cropper-canvas'),
+          $cropperView: $('.cropper-view')
+        });
+        DOM.$cropperContainer.width(width).height(height);
+        DOM.$cropperCanvas.append("<img>").children().attr({
+          'src': $('#image').attr('src'),
+          'width': DOM.$cropperContainer.width()
+        });
+        DOM.$cropperView.append("<img>").children().attr({
+          'src': $('#image').attr('src'),
+          'width': DOM.$cropperContainer.width()
+        }).css({
+          'transform': 'translateX(-50px) translateY(-20px)'
+        });
+        // 移动裁剪工具(定义各类响应事件)
+        DOM.$cropperView.on({
+          mousedown: function(e) {
+            moveFlag = true;
+            downCor.x = prevCor.x = e.pageX;
+            downCor.y = prevCor.y = e.pageY;
+            // 防止图片被拖拽
+            e.preventDefault();
+          },
+          mousemove: function(e) {
+            if(moveFlag) {
+              // 每次的位移
+              delCor.x = e.pageX - prevCor.x;
+              delCor.y = e.pageY - prevCor.y;
+              prevCor.x = e.pageX;
+              prevCor.y = e.pageY;
+              // 移动裁剪视口div
+              $(this).offset({
+                top: $(this).offset().top + delCor.y,
+                left: $(this).offset().left + delCor.x
+              });
+              // 反向移动图片
+              // 相对于定位元素的位移
+              $('.cropper-view img').css('transform', 'translateX(' + -$(this).position().left + 'px) translateY('+ -$(this).position().top + 'px)');
+            }
+          },
+          mouseup: function(e) {
+            moveFlag = false;
             prevCor.x = e.pageX;
             prevCor.y = e.pageY;
-            // 移动裁剪视口div
-            $(this).offset({
-              top: $(this).offset().top + delCor.y,
-              left: $(this).offset().left + delCor.x
-            });
-            // 反向移动图片
-            $('.cropper-view img').css('transform', 'translateX(' + -$(this).offset().left + 'px) translateY('+ -$(this).offset().top + 'px)');
+            cropper.x += e.pageX - downCor.x;
+            cropper.y += e.pageY - downCor.y;
+            cropImage();
           }
-        },
-        mouseup: function(e) {
-          moveFlag = false;
-          prevCor.x = e.pageX;
-          prevCor.y = e.pageY;
-          cropper.x += e.pageX - downCor.x;
-          cropper.y += e.pageY - downCor.y;
-          cropImage();
-        }
-      });
+        });
+      };
 
       // 裁剪图片
       function cropImage () {
         if(!$('#canvas').length) {
           $(document.body).append($('<canvas></canvas>', {
-            id: 'canvas',
-            width: cropper.width,
-            height: cropper.height
+            id: 'canvas'
           }));
         }
         var ctx =  $("#canvas").addClass('imageCanvas')[0].getContext("2d");
-        var img = $('#image')[0];
-        // 为什么参数是下面这样设置才能正常显示
-        ctx.drawImage(img,cropper.x,cropper.y,200,150,0,0,300,150);
+        ctx.drawImage(DOM.$img[0],cropper.x / ratio,cropper.y / ratio,cropper.width / ratio,cropper.height / ratio,0,0,cropper.width,cropper.height);
       }
 
   </script>
