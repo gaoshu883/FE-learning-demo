@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> Cropper</title>
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    img {
+      /*max-width: 100%;*/
+    }
+    .cropper-model {
+      opacity: 0.5;
+      background: #000;
+    }
+    .cropper-container {
+      position: relative;
+      cursor: crosshair;
+    }
+    .cropper-canvas,.cropper-mask,.cropper-cropbox {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .cropper-view {
+      position: absolute;
+      top: 20px;
+      left: 50px;
+      display: block;
+      width: 200px;
+      height: 150px;
+      overflow: hidden;
+      outline: 1px solid #008cee;
+      cursor: move;
+    }
+    .imageCanvas{
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="img-container">
+      <img id="image" src="lime-2133091_640.jpg" alt="Picture">
+  </div>
+  <div class="cropper-container">
+    <!-- 原始图像-->
+    <div class="cropper-canvas"></div>
+    <!-- 半透明蒙版 -->
+    <div class="cropper-mask"></div>
+    <!-- 裁剪框 -->
+    <div class="cropper-cropbox">
+      <span class="cropper-view"></span>
+    </div>
+  </div>
+  <div style="text-align: center;margin: 20px auto;"><button onclick="saveImg()">保存截图</button></div>
+  <script>
+      // 创建裁剪工具
+      var width = $('#image').parent().width();
+      var height = $('#image').parent().height();
+      $('#image').hide();
+      $('.cropper-container').width(width).height(height);
+      $('.cropper-mask').addClass('cropper-model');
+      $('.cropper-canvas').append("<img>").children().attr({
+        'src': $('#image').attr('src')
+      });
+      $('.cropper-view').append("<img>").children().attr('src', $('#image').attr('src')).css({
+        'transform': 'translateX(-50px) translateY(-20px)'
+      });
+      // 鼠标之前的坐标
+      var prevCor = {
+        x: 0,
+        y: 0
+      };
+      // 鼠标每次位移
+      var delCor = {
+        x: 0,
+        y: 0
+      };
+      // 鼠标按下位置
+      var downCor = {
+        x: 0,
+        y: 0
+      };
+      // 裁剪视口的尺寸和位置
+      var cropper = {
+        width: 200,
+        height: 150,
+        x: 50,
+        y:20
+      };
+      var moveFlag = false;
+      // 移动裁剪工具(定义各类响应事件)
+      $('.cropper-view').on({
+        mousedown: function(e) {
+          moveFlag = true;
+          downCor.x = prevCor.x = e.pageX;
+          downCor.y = prevCor.y = e.pageY;
+          // 防止图片被拖拽
+          e.preventDefault();
+        },
+        mousemove: function(e) {
+          if(moveFlag) {
+            // 每次的位移
+            delCor.x = e.pageX - prevCor.x;
+            delCor.y = e.pageY - prevCor.y;
+            // 累计位移
+            delCor.sum_x += delCor.x;
+            delCor.sum_y += delCor.y;
+            prevCor.x = e.pageX;
+            prevCor.y = e.pageY;
+            // 移动裁剪视口div
+            $(this).offset({
+              top: $(this).offset().top + delCor.y,
+              left: $(this).offset().left + delCor.x
+            });
+            // 反向移动图片
+            $('.cropper-view img').css('transform', 'translateX(' + -$(this).offset().left + 'px) translateY('+ -$(this).offset().top + 'px)');
+          }
+        },
+        mouseup: function(e) {
+          moveFlag = false;
+          prevCor.x = e.pageX;
+          prevCor.y = e.pageY;
+          cropper.x += e.pageX - downCor.x;
+          cropper.y += e.pageY - downCor.y;
+          console.log(cropper);
+        }
+      });
+
+      // 将裁剪的图片输入
+      function saveImg () {
+        if(!$('#canvas').length) {
+          $(document.body).append($('<canvas></canvas>', {
+            id: 'canvas',
+            width: cropper.width,
+            height: cropper.height
+          }));
+        }
+        var ctx =  $("#canvas").addClass('imageCanvas')[0].getContext("2d");
+        var img = $('#image')[0];
+        // 为什么参数是下面这样设置才能正常显示
+        ctx.drawImage(img,cropper.x,cropper.y,200,150,0,0,300,150);
+      }
+  </script>
+</body>
+</html>
