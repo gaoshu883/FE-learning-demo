@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>scale the section</title>
+  <link href="src/dragdealer.css" type="text/css" rel="stylesheet">
+  <script src="src/dragdealer.js"></script>
+  <style>
+    body {
+      padding-top: 80px;
+    }
+    #sectionDiv {
+      margin-bottom: 80px;
+    }
+    .dragdealer {
+      margin-top: 20px;
+      width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <section id="sectionDiv" style="border: 1px dashed #c00;width: 400px;height: 200px;overflow: hidden;">
+    <div style="width:100%;height:100%;text-align:center;">
+      <p>这是一个测试例子</p>
+      <img src="https://placem.at/people?w=400">
+    </div>
+  </section>
+
+<!-- 滑块组件1：纵向缩放 -->
+<h2>纵向缩放</h2>
+<div id="just-a-slider" class="dragdealer">
+    <div class="handle red-bar">
+        <span class="value"></span>%
+    </div>
+</div>
+<!-- 滑块组件2：等比例缩放 -->
+<h2>右下角等比例缩放</h2>
+<div id="just-a-slider2" class="dragdealer">
+    <div class="handle red-bar">
+        <span class="value"></span>%
+    </div>
+</div>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    new Dragdealer('just-a-slider', {
+      x:0.5,
+      animationCallback: function(x, y) {
+        $('#just-a-slider .value').text(Math.round(x * 200));
+        $('#sectionDiv').css({
+          'transform': 'scaleY(' + x*2 +')'
+        });
+      }
+    });
+
+    new Dragdealer('just-a-slider2', {
+      x:0.5,
+      animationCallback: function(x, y) {
+        $('#just-a-slider2 .value').text(Math.round(x * 200));
+        $('#sectionDiv').css({
+          'transform': 'scale(' + x*2 +')',
+          'transform-origin': "0% 0%"
+        });
+      }
+    });
+  </script>
+</body>
+</html>

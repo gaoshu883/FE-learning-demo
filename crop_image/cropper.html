@@ -21,7 +21,7 @@
       position: relative;
       cursor: crosshair;
     }
-    .cropper-canvas,.cropper-mask,.cropper-cropbox {
+    .cropper-canvas,.cropper-mask {
       position: absolute;
       top: 0;
       left: 0;
@@ -49,14 +49,6 @@
   <div class="img-container">
       <img id="image" src="lime-2133091_640.jpg" alt="Picture">
   </div>
-<!--   <div class="cropper-container">
-    <div class="cropper-canvas"></div>
-    <div class="cropper-mask"></div>
-    <div class="cropper-cropbox">
-      <span class="cropper-view"></span>
-    </div>
-  </div> -->
-  <div style="text-align: center;margin: 20px auto;"><button onclick="">保存截图</button></div>
   <script>
       var DOM = {
         $img: $('#image')
@@ -160,7 +152,6 @@
         var ctx =  $("#canvas").addClass('imageCanvas')[0].getContext("2d");
         ctx.drawImage(DOM.$img[0],cropper.x / ratio,cropper.y / ratio,cropper.width / ratio,cropper.height / ratio,0,0,cropper.width,cropper.height);
       }
-
   </script>
 </body>
 </html>
